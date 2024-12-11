@@ -18,3 +18,14 @@ The frontend is programmed in TypeScript, using AngularJS as a Framework. It's a
 
 # Screenshots
 
+### Overview
+![Overview](img/overview.PNG)
+### Overview with detail view
+![Detail view](img/detail_view.PNG)
+### Locations
+![Locations](img/locations.PNG)
+### Item view
+![Item view](img/item_view.PNG)
+![Item view](img/item_view2.PNG)
+![Item view](img/item_view3.PNG)
+
