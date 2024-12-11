@@ -1,0 +1,106 @@
+<div class="card">
+  <div class="table-responsive table-m">
+    <table class="table table-bordered">
+      <thead class="thead-light">
+      <tr>
+        <!--<th scope="col" class="align-middle">#</th>-->
+        <th scope="col" class="align-middle">Item
+          <div class="form-check form-switch  d-print-none-inline float-right">
+            <input #showEmptyForm class="form-check-input" type="checkbox"
+                   [checked]="this.showEmpty" (change)="this.showEmpty=showEmptyForm.checked" role="switch" id="showEmpty">
+            <label class="form-check-label font-weight-light" for="showEmpty">Show empty</label>
+          </div></th>
+        <th scope="col" class="align-middle">Category</th>
+        <th scope="col" class="align-middle">Location</th>
+        <th scope="col" class="align-middle" colspan="2">Expiry date</th>
+        <!--<th scope="col" class="align-middle">Bought</th>-->
+        <!--<th scope="col" class="d-print-none"></th>-->
+      </tr>
+      <tr class=" d-print-none">
+        <!--<td>
+        </td>-->
+        <td>
+          <input #searchName [(ngModel)]="searchBy"
+                 class="form-control"
+                 id="description"
+                 name="description"
+                 placeholder="Search"
+                 required type="text"
+                 size="10"
+                 autocomplete="off">
+        </td>
+        <td class="align-middle"><select #category (change)="this.selectedCategory=category.value" [(ngModel)]="selectedCategory">
+          <option>All</option>
+          <option *ngFor="let category of categories" >{{ category }}</option>
+        </select>
+        </td>
+        <td class="align-middle"><select  #location (change)="this.selectedLocation=location.value" [ngModel]="selectedLocation">
+          <option>All</option>
+          <option *ngFor="let location of locations" >{{ location.name }}</option>
+        </select>
+        </td>
+        <td class="align-middle"><select  #expirySort (change)="this.sortExpiryDateBy=expirySort.value">
+          <option value="">Sort...</option>
+          <option value="asc">Asc</option>
+          <option value="desc">Desc</option>
+        </select></td>
+        <td class="align-middle">
+          <button (click)="showEmpty=false;selectedLocation=selectedCategory='All';searchBy=searchName.value='';sortExpiryDateBy=expirySort.value=''" type="button" value="x"  class="btn btn-secondary float-right"><i class="bi bi-card-checklist"></i> Clear filters</button>
+        </td>
+        <!--<td class="text-center align-middle"></td>-->
+      </tr>
+      </thead>
+      <tbody>
+      <ng-template ngFor let-item [ngForOf]="items | tableFilter: showEmpty : selectedCategory : selectedLocation : searchBy : sortExpiryDateBy" let-i="index">
+        <tr>
+         <!-- <td>{{ item.id }}</td>-->
+          <td class="bg-light w-25"  ng-click (click)="item.showDescription=!item.showDescription"><b>{{ item.itemName }}</b> <span [className]="item.itemAmount>0 ? 'badge badge-secondary float-right' : 'badge badge-danger float-right'">{{ item.itemAmount  }}</span></td>
+          <td class="w-25">{{ item.itemCategory }}</td>
+          <td class="w-25">{{ item.itemLocation.name }}</td>
+
+          <td colspan="2" class="w-25">
+            {{ item.itemExpires | date:'yyyy-MM-dd'  }}
+            <i *ngIf="-35<calculateDiff(item.itemExpires)&&calculateDiff(item.itemExpires)<=0" class="bi bi-exclamation-square-fill text-warning float-right"></i>
+            <i *ngIf="calculateDiff(item.itemExpires)>0" class="bi bi-exclamation-square-fill text-danger float-right" ></i>
+          </td>
+         <!-- <td>{{ item.itemBought | date:'yyyy-MM-dd' }}</td>-->
+
+         <!-- <td class="text-center  d-print-none"></td>-->
+        </tr>
+        <tr [hidden]="!item.showDescription" ><td class="table-active" colspan="7">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Details for <i>{{item.itemName}}</i> (#{{item.id}})</h5>
+                  <p class="card-text"><b>Location: </b> {{item.itemLocation.name}}</p>
+                  <p class="card-text"><b>Category: </b> {{item.itemCategory}}</p>
+                  <p class="card-text"><b>Date of purchase: </b> {{item.itemBought | date:'yyyy-MM-dd'}}</p>
+                  <p class="card-text"><b>Date of expiry: </b> {{item.itemExpires | date:'yyyy-MM-dd'}}</p>
+                  <p class="card-text"><b>Description: </b> {{item.itemDescription}}</p>
+                  <p class="card-text"><b>Comment: </b> {{item.itemComment}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <a href="{{ labels.get(item.id) }}" download><img width="100%" src="{{ labels.get(item.id) }}" /></a>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <a href="{{ labels.get(item.id) }}" download><button type="button" value="x" class=" d-none d-lg-inline btn btn-dark"><i class="bi bi-qr-code"></i> Download QR</button></a>
+                  <button type="button" value="x" [routerLink]="[ '/item',item.id]" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit</button>
+                  <button type="button" value="x" [routerLink]="[ '/items/',item.itemLocation.locationId]" class="btn btn-primary"><i class="bi bi-folder2-open"></i> {{ item.itemLocation.name.length > 10 ? item.itemLocation.name.substring(0, 10)+'...' : item.itemLocation.name }} </button>
+                  <button [disabled]="item.itemAmount!=0" type="button" value="x" (click)="delete(item)" class="btn btn-danger"><i class="bi bi-x-circle-fill"></i> Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </td></tr>
+      </ng-template>
+      </tbody>
+    </table>
+  </div>
+</div>

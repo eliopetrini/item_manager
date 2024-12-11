@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card bg-dark my-3  d-print-none">
+        <div class="card-body align-middle">
+          <h2 class="card-title text-center text-white py-2"><i style="float: left; font-size: 5rem;color: white" class="bi bi-box-seam"></i> {{ title }} {{ appName }}</h2>
+          <ul class="text-center list-inline py-2">
+            <li class="list-inline-item">
+              <a routerLink="/items" class="btn btn-primary">List items</a>
+            </li>
+            <li class="list-inline-item">
+              <a routerLink="/additem" class="btn btn-primary">New item</a>
+            </li>
+            <li class="list-inline-item">
+              <a routerLink="/locations" class="btn btn-primary">Locations</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

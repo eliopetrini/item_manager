@@ -1,0 +1,100 @@
+<div class="card my-5">
+  <div class="card-body">
+    <form #itemsForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="font-weight-bold" for="name">Name</label>
+            <input #name="ngModel" [(ngModel)]="items.itemName"
+                   class="form-control"
+                   id="name"
+                   name="name"
+                   placeholder="Enter the item's name"
+                   autocomplete="off"
+                   required type="text">
+          </div>
+          <div [hidden]="!name.pristine" class="alert alert-danger">Name is required</div>
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Description</label>
+            <input #description="ngModel" [(ngModel)]="items.itemDescription"
+                   class="form-control"
+                   id="description"
+                   name="description"
+                   placeholder="Enter the item's description"
+                   autocomplete="off"
+                   required type="text">
+          </div>
+          <div [hidden]="!description.pristine" class="alert alert-danger">Description is required</div>
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Location </label>
+           <br /><select [(ngModel)]="items.itemLocation" name="itemLocation">
+            <option *ngFor="let location of locations" [ngValue]="location">{{ location.name }} {{ location.description=='' ? '' : '- ' + location.description }}</option>
+          </select><br /><br /></div>
+          <button [disabled]="!itemsForm.form.valid" class="btn btn-primary"
+                  type="submit">Submit
+          </button>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Date of purchase (yyyy-MM-dd):</label>
+            <input [(ngModel)]="items.itemBought"
+                   class="form-control d-inline float-right"
+                   id="datebought"
+                   name="datebought"
+                   placeholder="Insert Date"
+                   style="width:200px"
+                   type="text">
+          </div>
+        <div class="form-group">
+          <label class="font-weight-bold" for="description">Date of expiry  (yyyy-MM-dd):</label>
+          <input [(ngModel)]="items.itemExpires"
+                 class="form-control d-inline float-right"
+                 style="width:200px"
+                 id="datexpiry"
+                 name="datexpiry"
+                 placeholder="Enter the expiry date"
+                 type="text">
+        </div>
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Initial amount:</label>
+            <input  [(ngModel)]="items.itemAmount"
+                   class="form-control d-inline float-right"
+                   id="initialamount"
+                   name="initialamount"
+                   placeholder="Enter the initial amount"
+                    style="width:70px"
+                   type="text">
+          </div>
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Category: </label>
+            <input [(ngModel)]="items.itemCategory"
+                   class="form-control d-inline float-right"
+                   id="itemcategory"
+                   name="itemgategory"
+                   placeholder=""
+                   autocomplete="off"
+                   style="width:200px"
+                   type="text">
+
+          </div><div>or select from existing categories: <select class="d-inline float-right" #category (change)="items.itemCategory = category.value">
+          <option>Select...</option>
+          <option *ngFor="let category of categories">{{ category }}</option>
+        </select><br /><br /></div>
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Comment: </label>
+            <textarea [(ngModel)]="items.itemComment"
+                      class="form-control"
+                      id="itemcomment"
+                      name="itemcomment"
+                      placeholder=""
+                      autocomplete="off"
+                      rows="5"
+                      type="text"></textarea>
+
+          </div>
+      </div>
+
+      </div>
+    </form>
+  </div>
+</div>

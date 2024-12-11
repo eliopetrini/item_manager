@@ -1,0 +1,111 @@
+<div class="card my-5">
+  <div class="card-header"><p class="display-4 text-center"> {{ item.itemName }} </p></div>
+
+  <p><br /><button (click)="setAmount(1)" type="button" value="" class="btn btn-success btn-lg btn-block"><i class="bi bi-plus-square"></i></button></p>
+  <p class="display-1 text-center lead "><strong>{{ item.itemAmount }}</strong></p>
+  <button (click)="setAmount(-1)" type="button" value="" class="btn btn-danger btn-lg btn-block"><i class="bi bi-dash-square"></i></button>
+  </div>
+<div class="card my-5">
+  <div class="card-body">
+    <form #itemsForm="ngForm" (ngSubmit)="onSave()">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="font-weight-bold" for="name">Name</label>
+            <input #name="ngModel" [(ngModel)]="item.itemName"
+                   class="form-control"
+                   id="name"
+                   name="name"
+                   placeholder="Enter the item's name"
+                   autocomplete="off"
+                   required type="text">
+          </div>
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Description</label>
+            <input #description="ngModel" [(ngModel)]="item.itemDescription"
+                   class="form-control"
+                   id="description"
+                   name="description"
+                   placeholder="Enter the item's description"
+                   autocomplete="off"
+                   required type="text">
+          </div>
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Location</label>
+          <br /><select [compareWith]="compareLocations" #itemLocation="ngModel" [(ngModel)]="item.itemLocation" name="itemLocation">
+            <option *ngFor="let location of locations" [ngValue]="location" >{{ location.name }} {{ location.description=='' ? '' : '- ' + location.description }}</option>
+          </select><br /><br /></div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Date of purchase (yyyy-MM-dd):</label>
+            <input [(ngModel)]="item.itemBought"
+                   class="form-control d-inline float-right"
+                   id="datebought"
+                   name="datebought"
+                   placeholder="Enter the purchase date"
+                   size="10"
+                   style="width:150px"
+                   type="text">
+          </div>
+          <div class="form-group">
+            <label class="font-weight-bold d-inline" for="description">Date of expiry  (yyyy-MM-dd): </label>
+            <input [(ngModel)]="item.itemExpires"
+                   class="form-control d-inline float-right"
+                   id="datexpiry"
+                   name="datexpiry"
+                   placeholder="Enter the expiry date"
+                   style="width:150px"
+                   size="10"
+                   type="text">
+          </div>
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Category: </label>
+            <input [(ngModel)]="item.itemCategory"
+                   class="form-control d-inline float-right"
+                   id="itemcategory"
+                   name="itemgategory"
+                   placeholder=""
+                   autocomplete="off"
+                   size="10"
+                   style="width:200px"
+                   type="text">
+
+          </div><div>or select from existing categories: <select class="d-inline float-right"  #category (change)="item.itemCategory = category.value">
+          <option *ngFor="let category of categories" [defaultSelected]="item.itemCategory==category">{{ category }}</option>
+        </select><br /><br /></div>
+          <div class="form-group">
+            <label class="font-weight-bold" for="description">Comment: </label>
+            <textarea [(ngModel)]="item.itemComment"
+                   class="form-control"
+                   id="itemcomment"
+                   name="itemcomment"
+                   placeholder=""
+                   autocomplete="off"
+                   rows="5"
+                   type="text"></textarea>
+
+          </div>
+        </div>
+        <div class="col-sm-12">
+        <div class="form-group">
+          <button [disabled]="!itemsForm.form.valid" class="btn btn-primary"
+                  type="submit">Save
+          </button>
+          <a href="{{ label }}" download><button type="button" value="x" class="btn btn-dark"><i class="bi bi-qr-code"></i></button></a>
+        </div>
+        <div [hidden]="!hasBeenSaved" class="alert alert-success">Saved successfully</div>
+          </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div  class="card my-5">
+<ul class="list-group">
+  <li *ngFor="let changeLog of item.changeLog" class="list-group-item d-flex justify-content-between align-items-center">
+    <span><b>{{ changeLog.changeDate | date:'yyyy-MM-dd HH:mm:ss'  }}</b> - {{ changeLog.logMessage }}</span>
+    <span *ngIf="changeLog.currentAmount>=0" [className]="changeLog.changeAmount<0 ? 'badge badge-danger badge-pill' : changeLog.changeAmount==0 ? 'badge badge-primary badge-pill' : 'badge badge-success badge-pill'">{{ changeLog.currentAmount }}</span>
+  </li>
+</ul>
+</div>
